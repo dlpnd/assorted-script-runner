@@ -1,0 +1,21 @@
+ref rUDF = (begin function { ref rActivator, ref rAction }
+    if (Player.GetItemCount Hammer01 > 0)
+        int iBombAttemptCount = Player.AuxVarGetFLT "iBombAttemptCount"
+        int iRightSideChance = (Rand 1, 6)
+        int iLeftSideChange = (Rand 1, 6)
+        if eval (iLeftSideChange == iRightSideChance)
+            Player.PlaceAtMe FatManNukeExplosion
+            Player.Kill
+        elseif (iBombAttemptCount >= 5)
+            MessageEx "Whoops"
+            Player.AddItem SpareParts 150
+            RemoveEventHandler "OnActivate" rUDF
+            Player.AuxVarSetFLT "iBombAttemptCount" 0
+        else
+            Player.AuxVarSetFLT "iBombAttemptCount" (iBombAttemptCount + 1)
+            MessageEx "You hit it with a hammer"
+            PlaySound FXMeleeSledgeMetal
+        endif
+    endif
+end)
+SetEventHandler "OnActivate" rUDF "firightSideChancest"::BigBoomerOne

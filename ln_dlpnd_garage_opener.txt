@@ -1,0 +1,11 @@
+SetEventHandler "OnKeyDown:28" (begin function { int keyCode }
+    if eval (Player.GetItemCount AdobeGKGarageFOB > 0)
+        int iDoorState = RefDMGarageDoor.GetOpenState
+
+        if eval (iDoorState == 1)          ; if Open
+            RefDMGarageDoor.SetOpenState 0 ; Close
+        elseif eval (iDoorState == 3)      ; if Close
+            RefDMGarageDoor.SetOpenState 1 ; Open
+        endif
+    endif
+end)

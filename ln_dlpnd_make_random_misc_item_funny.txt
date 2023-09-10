@@ -1,0 +1,19 @@
+SetEventHandler "OnActivate" (begin function { ref rActivator, ref rAction }
+    Player.PlaceAtMe FatManNukeExplosion
+	Player.Kill
+end) "first"::DMRocketSouvenir
+
+SetEventHandler "OnCellEnter" (begin function{ ref rEnteredCell }
+    let array_var aArrayForRocketSouvenirs = Ar_Construct "array"
+
+    foreach array_var aSingleMiscItemInCell <- (GetRefs 31)
+        if eval (((*aSingleMiscItemInCell).gbo) == VMS01RocketSouvenir)
+            Ar_Append aArrayForRocketSouvenirs (*aSingleMiscItemInCell)
+        endif
+    loop
+
+    if eval (Ar_Size aArrayForRocketSouvenirs) > 0
+        ref rSingleRocketSouvenir = aArrayForRocketSouvenirs[(GetRandomInRange 0 (Ar_Size aArrayForRocketSouvenirs))]
+        rSingleRocketSouvenir.SetBaseForm DMRocketSouvenir
+    endif
+end) "first"::NovacGiftShop

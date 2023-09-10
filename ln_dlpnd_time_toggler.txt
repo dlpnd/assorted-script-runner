@@ -1,0 +1,7 @@
+SetEventHandler "OnKeyDown:43" (begin function { int keyCode }
+    if GetCurrentTime > 12
+        SetGameHour 0
+    else
+        SetGameHour 12
+    endif
+end)
