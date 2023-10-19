@@ -1,6 +1,6 @@
 SetEventHandler "OnActivate" (begin function { ref rActivator, ref rAction }
     Player.PlaceAtMe FatManNukeExplosion
-	Player.Kill
+    Player.Kill
 end) "first"::DMRocketSouvenir
 
 SetEventHandler "OnCellEnter" (begin function{ ref rEnteredCell }

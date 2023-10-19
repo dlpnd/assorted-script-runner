@@ -18,4 +18,5 @@ ref rUDF = (begin function { ref rActivator, ref rAction }
         endif
     endif
 end)
+
 SetEventHandler "OnActivate" rUDF "firightSideChancest"::BigBoomerOne

@@ -1,0 +1,15 @@
+;begin MenuMode 4
+;    MarkMiscStatForSave "Days Passed"
+;end
+SetGameMainLoopCallback (begin function {}
+    int iLastDay = (AuxVarGetFLT "iLastDay")
+    if eval IsModLoaded "TaleOfTwoWastelands.esm"
+        int iCurrentDay = (GetGameDaysPassed 2277 08 17)
+    else 
+        int iCurrentDay = (GetGameDaysPassed 2281 10 19)
+    endif
+    if iCurrentDay > iLastDay
+        ModExtraMiscStat "Days Passed" (iCurrentDay - iLastDay)
+        AuxVarSetFLT "iLastDay" iCurrentDay
+    endif
+end) 1 15 1
