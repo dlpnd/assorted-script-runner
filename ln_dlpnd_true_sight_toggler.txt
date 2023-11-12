@@ -1,0 +1,56 @@
+; Which scan code to use: https://geckwiki.com/index.php?title=DirectX_Scancodes
+
+; Which key to enable True Iron Sights. 
+; Defaul: 264 (Scroll Up)
+int iSightKey = 264
+
+; Which key to enable Hip Fire. 
+; Default: 265 (Scroll Down)
+int iHipKey = 265
+
+; Which key you use for Aiming.
+; Default: 257 (Right Click)
+int iAimKey = 257
+
+; Switch instantly, or wait until you release the aim key, and aim again.
+; Default: 1
+int iInstant = 1
+
+; How many frames to wait between toggling the modes. 
+; Only used if iInstant is set to 1
+; Default: 15
+int iFrameWait = 15
+
+SetOnKeyDownEventHandler (begin function { int keyCode }
+    if eval (MenuMode || !IsPC1stPerson)
+        return
+    endif
+    int iLastKey = (player.AuxVarGetFLT "iLastKey")
+    if eval (player.IsAiming && iLastKey != iSightKey && iInstant)
+        DisableKey iAimKey
+        CallAfterFrames iFrameWait (begin function {} 
+            EnableKey iAimKey
+        end)
+    endif
+    SetNumericIniSetting "bTrueIronSights:GamePlay" 1
+    player.AuxVarSetFLT "iLastKey" iSightKey 
+end) 1 iSightKey
+
+SetOnKeyDownEventHandler (begin function { int keyCode }
+    if eval (MenuMode || !IsPC1stPerson)
+        return
+    endif
+    int iLastKey = (player.AuxVarGetFLT "iLastKey")
+    if eval (player.IsAiming && iLastKey != iHipKey && iInstant)
+        DisableKey iAimKey
+        CallAfterFrames iFrameWait (begin function {} 
+            EnableKey iAimKey
+        end)
+    endif
+    SetNumericIniSetting "bTrueIronSights:GamePlay" 0
+    player.AuxVarSetFLT "iLastKey" iHipKey
+end) 1 iHipKey
+
+SetOnKeyDownEventHandler (begin function { int keyCode }
+    EnableKey iAimKey
+end) 1 iAimKey
