@@ -2,55 +2,65 @@
 
 ; Which key to enable True Iron Sights. 
 ; Defaul: 264 (Scroll Up)
-int iSightKey = 264
+int iSightsKeyCode = 264
 
 ; Which key to enable Hip Fire. 
 ; Default: 265 (Scroll Down)
-int iHipKey = 265
+int iHipfireKeyCode = 265
 
 ; Which key you use for Aiming.
 ; Default: 257 (Right Click)
-int iAimKey = 257
+int iAimingKeyCode = 257
 
 ; Switch instantly, or wait until you release the aim key, and aim again.
 ; Default: 1
-int iInstant = 1
+int iInstantlySwitch = 1
 
 ; How many frames to wait between toggling the modes. 
-; Only used if iInstant is set to 1
+; Only used if iInstantlySwitch is set to 1
 ; Default: 15
-int iFrameWait = 15
+int iFramesToWait = 15
 
-SetOnKeyDownEventHandler (begin function { int keyCode }
-    if eval (MenuMode || !IsPC1stPerson)
+array_var aWeaponBlockList = GetINISection "Weapons" "DLpnd\tst_weaps.ini"
+
+SetOnKeyDownEventHandler (begin function { int iKeyCode }
+    if eval (MenuMode || !IsPC1stPerson || Ar_HasKey aWeaponBlockList (GetEditorId (Player.GetEquippedObject 5)))
         return
     endif
-    int iLastKey = (player.AuxVarGetFLT "iLastKey")
-    if eval (player.IsAiming && iLastKey != iSightKey && iInstant)
-        DisableKey iAimKey
-        CallAfterFrames iFrameWait (begin function {} 
-            EnableKey iAimKey
+
+    int iLastKeyCode = (Player.AuxVarGetFLT "iLastKeyCode")
+
+    if eval (iInstantlySwitch && Player.IsAiming && iLastKeyCode != iSightsKeyCode)
+        DisableKey iAimingKeyCode
+        CallAfterFrames iFramesToWait (begin function {} 
+            EnableKey iAimingKeyCode
         end)
     endif
+
     SetNumericIniSetting "bTrueIronSights:GamePlay" 1
-    player.AuxVarSetFLT "iLastKey" iSightKey 
-end) 1 iSightKey
 
-SetOnKeyDownEventHandler (begin function { int keyCode }
-    if eval (MenuMode || !IsPC1stPerson)
+    Player.AuxVarSetFLT "iLastKeyCode" iSightsKeyCode 
+end) 1 iSightsKeyCode
+
+SetOnKeyDownEventHandler (begin function { int iKeyCode }
+    if eval (MenuMode || !IsPC1stPerson || Ar_HasKey aWeaponBlockList (GetEditorId (Player.GetEquippedObject 5)))
         return
     endif
-    int iLastKey = (player.AuxVarGetFLT "iLastKey")
-    if eval (player.IsAiming && iLastKey != iHipKey && iInstant)
-        DisableKey iAimKey
-        CallAfterFrames iFrameWait (begin function {} 
-            EnableKey iAimKey
+
+    int iLastKeyCode = (Player.AuxVarGetFLT "iLastKeyCode")
+
+    if eval (iInstantlySwitch && Player.IsAiming && iLastKeyCode != iHipfireKeyCode)
+        DisableKey iAimingKeyCode
+        CallAfterFrames iFramesToWait (begin function {} 
+            EnableKey iAimingKeyCode
         end)
     endif
-    SetNumericIniSetting "bTrueIronSights:GamePlay" 0
-    player.AuxVarSetFLT "iLastKey" iHipKey
-end) 1 iHipKey
 
-SetOnKeyDownEventHandler (begin function { int keyCode }
-    EnableKey iAimKey
-end) 1 iAimKey
+    SetNumericIniSetting "bTrueIronSights:GamePlay" 0
+
+    Player.AuxVarSetFLT "iLastKeyCode" iHipfireKeyCode
+end) 1 iHipfireKeyCode
+
+SetOnKeyDownEventHandler (begin function { int iKeyCode }
+    EnableKey iAimingKeyCode
+end) 1 iAimingKeyCode
