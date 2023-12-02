@@ -1,0 +1,32 @@
+InitExtraMiscStat "Hit in Torso"
+InitExtraMiscStat "Hit in Head"
+InitExtraMiscStat "Hit in Left Arm"
+InitExtraMiscStat "Hit in Right Arm"
+InitExtraMiscStat "Hit in Left Leg"
+InitExtraMiscStat "Hit in Right Leg"
+
+SetEventHandler "DLpndSetPlayer" (begin function { int iHitLocation }
+    if iHitLocation == 0
+        ModExtraMiscStat "Hit in Torso" 1
+    elseif iHitLocation == 1
+        ModExtraMiscStat "Hit in Head" 1
+    elseif iHitLocation == 3
+        ModExtraMiscStat "Hit in Left Arm" 1
+    elseif (iHitLocation == 5 || iHitLocation == 14)
+        ModExtraMiscStat "Hit in Right Arm" 1
+    elseif iHitLocation == 7
+        ModExtraMiscStat "Hit in Left Leg" 1
+    elseif iHitLocation == 10
+        ModExtraMiscStat "Hit in Right Leg" 1
+    endif
+end)
+
+SetOnHitEventHandler (begin function {}
+    ref rPlayer = this 
+    if rPlayer.GetDead == 0
+        int iHitLocation = rPlayer.GetHitLocation
+        DispatchEventAlt "DLpndSetPlayer" iHitLocation
+    endif
+end) 1 Player
+
+SetOnQuestStageEventHandler ({ref rQuest int iStageIdx} => ModExtraMiscStat "Hit in Head" 1) 1 VCG01 5

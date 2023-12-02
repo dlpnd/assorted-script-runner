@@ -10,7 +10,7 @@ ref rUDF = (begin function { ref rActivator, ref rAction }
             MessageEx "Whoops"
             Player.AddItem SpareParts 150
             RemoveEventHandler "OnActivate" rUDF
-            Player.AuxVarSetFLT "iBombAttemptCount" 0
+            Player.AuxiliaryVariableErase "iBombAttemptCount"
         else
             Player.AuxVarSetFLT "iBombAttemptCount" (iBombAttemptCount + 1)
             MessageEx "You hit it with a hammer"
