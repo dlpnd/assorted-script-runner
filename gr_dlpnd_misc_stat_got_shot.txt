@@ -6,20 +6,20 @@ InitExtraMiscStat "Hit in Left Leg"
 InitExtraMiscStat "Hit in Right Leg"
 
 SetOnHitEventHandler (begin function {}
-    ref rT = this 
-    if rT.GetDead == 0
-        int iHit = rT.GetHitLocation
-        if iHit == 0
+    ref rPlayer = this 
+    if rPlayer.GetDead == 0
+        int iHitLocation = rPlayer.GetHitLocation
+        if iHitLocation == 0
             ModExtraMiscStat "Hit in Torso" 1
-        elseif iHit == 1
+        elseif iHitLocation == 1
             ModExtraMiscStat "Hit in Head" 1
-        elseif iHit == 3
+        elseif iHitLocation == 3
             ModExtraMiscStat "Hit in Left Arm" 1
-        elseif (iHit == 5 || iHit == 14)
+        elseif (iHitLocation == 5 || iHitLocation == 14)
             ModExtraMiscStat "Hit in Right Arm" 1
-        elseif iHit == 7
+        elseif iHitLocation == 7
             ModExtraMiscStat "Hit in Left Leg" 1
-        elseif iHit == 10
+        elseif iHitLocation == 10
             ModExtraMiscStat "Hit in Right Leg" 1
         endif
     endif
