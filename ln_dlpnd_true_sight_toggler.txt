@@ -24,43 +24,31 @@ int iFramesToWait = 15
 array_var aWeaponBlockList = GetINISection "Weapons" "DLpnd\tst_weaps.ini"
 
 SetOnKeyDownEventHandler (begin function { int iKeyCode }
-    if eval (MenuMode || !IsPC1stPerson || Ar_HasKey aWeaponBlockList (GetEditorId (Player.GetEquippedObject 5)))
+    if eval (MenuMode || !IsPC1stPerson || Ar_HasKey aWeaponBlockList (GetEditorId(Player.GetEquippedObject 5)))
         return
     endif
 
-    int iLastKeyCode = (Player.AuxVarGetFLT "iLastKeyCode")
-
-    if eval (iInstantlySwitch && Player.IsAiming && iLastKeyCode != iSightsKeyCode)
+    if eval (iInstantlySwitch && Player.IsAiming && (Player.AuxVarGetFLT "*iLastKeyCode") != iSightsKeyCode)
         DisableKey iAimingKeyCode
-        CallAfterFrames iFramesToWait (begin function {} 
-            EnableKey iAimingKeyCode
-        end)
+        CallAfterFrames iFramesToWait ({} => EnableKey iAimingKeyCode)
     endif
 
     SetNumericIniSetting "bTrueIronSights:GamePlay" 1
-
-    Player.AuxVarSetFLT "iLastKeyCode" iSightsKeyCode 
+    Player.AuxVarSetFLT "*iLastKeyCode" iSightsKeyCode 
 end) 1 iSightsKeyCode
 
 SetOnKeyDownEventHandler (begin function { int iKeyCode }
-    if eval (MenuMode || !IsPC1stPerson || Ar_HasKey aWeaponBlockList (GetEditorId (Player.GetEquippedObject 5)))
+    if eval (MenuMode || !IsPC1stPerson || Ar_HasKey aWeaponBlockList (GetEditorId(Player.GetEquippedObject 5)))
         return
     endif
 
-    int iLastKeyCode = (Player.AuxVarGetFLT "iLastKeyCode")
-
-    if eval (iInstantlySwitch && Player.IsAiming && iLastKeyCode != iHipfireKeyCode)
+    if eval (iInstantlySwitch && Player.IsAiming && (Player.AuxVarGetFLT "*iLastKeyCode") != iHipfireKeyCode)
         DisableKey iAimingKeyCode
-        CallAfterFrames iFramesToWait (begin function {} 
-            EnableKey iAimingKeyCode
-        end)
+        CallAfterFrames iFramesToWait ({} => EnableKey iAimingKeyCode)
     endif
 
     SetNumericIniSetting "bTrueIronSights:GamePlay" 0
-
-    Player.AuxVarSetFLT "iLastKeyCode" iHipfireKeyCode
+    Player.AuxVarSetFLT "*iLastKeyCode" iHipfireKeyCode
 end) 1 iHipfireKeyCode
 
-SetOnKeyDownEventHandler (begin function { int iKeyCode }
-    EnableKey iAimingKeyCode
-end) 1 iAimingKeyCode
+SetOnKeyDownEventHandler ({ int iKeyCode } => EnableKey iAimingKeyCode) 1 iAimingKeyCode
