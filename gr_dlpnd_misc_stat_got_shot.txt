@@ -25,4 +25,9 @@ SetOnHitEventHandler (begin function {}
     endif
 end) 1 Player
 
-SetOnQuestStageEventHandler ({ref rQuest int iStageIdx} => ModExtraMiscStat "Hit in Head" 1) 1 VCG01 5
+ref rUDF = (begin function {ref rQuest int iStageIdx} 
+    ModExtraMiscStat "Hit in Head" 1
+    SetOnQuestStageEventHandler rUDF 0 VCG01 5
+end)
+
+SetOnQuestStageEventHandler rUDF 1 VCG01 5
