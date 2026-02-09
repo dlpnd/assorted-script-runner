@@ -6,56 +6,46 @@ InitExtraMiscStat "Shot Left Leg"
 InitExtraMiscStat "Shot Right Leg"
 InitExtraMiscStat "Shot Brain"
 
-SetEventHandler "DLpndSetHuman" (begin function { int iHitLocation }
-    if iHitLocation == 0
+SetEventHandler "DLpndSetHuman" (begin function { int iHit }
+    if iHit == 0
         ModExtraMiscStat "Shot Torso" 1
-    elseif iHitLocation == 1
+    elseif iHit == 1
         ModExtraMiscStat "Shot Head" 1
-    elseif iHitLocation == 3
+    elseif iHit == 3
         ModExtraMiscStat "Shot Left Arm" 1
-    elseif (iHitLocation == 5 || iHitLocation == 14)
+    elseif (iHit == 5 || iHit == 14)
         ModExtraMiscStat "Shot Right Arm" 1
-    elseif iHitLocation == 7
+    elseif iHit == 7
         ModExtraMiscStat "Shot Left Leg" 1
-    elseif iHitLocation == 10
+    elseif iHit == 10
         ModExtraMiscStat "Shot Right Leg" 1
     endif
 end)
 
-SetEventHandler "DLpndSetCreat" (begin function { int iHitLocation }
-    if iHitLocation == 2
+SetEventHandler "DLpndSetCreat" (begin function { int iHit }
+    if iHit == 2
         ModExtraMiscStat "Shot Head" 1
-    elseif iHitLocation == 4
+    elseif iHit == 4
         ModExtraMiscStat "Shot Left Arm" 1
-    elseif iHitLocation == 6
+    elseif iHit == 6
         ModExtraMiscStat "Shot Right Arm" 1
-    elseif (iHitLocation == 8 || iHitLocation == 9)
+    elseif (iHit == 8 || iHit == 9)
         ModExtraMiscStat "Shot Left Leg" 1
-    elseif (iHitLocation == 11 || iHitLocation == 12)
+    elseif (iHit == 11 || iHit == 12)
         ModExtraMiscStat "Shot Right Leg" 1
-    elseif iHitLocation == 13
+    elseif iHit == 13
         ModExtraMiscStat "Shot Brain" 1
     endif
 end)
 
 SetOnHitEventHandler (begin function {}
-    ref rTarget = this 
-    if rTarget.GetDead == 0 && rTarget != Player
-        int iHitLocation = rTarget.GetHitLocation
-        array_var aHuman := Ar_List 0, 1, 3, 5, 7, 10, 14
-        if Ar_Any aHuman ({array_var aIter} => *aIter == iHitLocation)
-            DispatchEventAlt "DLpndSetHuman" iHitLocation
+    ref rT = this 
+    if eval (rT.GetDead == 0 && rT != Player)
+        int iHit = rT.GetHitLocation
+        string_var sEvent = "DLpndSetCreat"
+        if Ar_Any (Ar_List 0, 1, 3, 5, 7, 10, 14) ({array_var aIter} => *aIter == iHit)
+            sEvent = "DLpndSetHuman"
         endif
-    endif
-end) 1
-
-SetOnHitEventHandler (begin function {}
-    ref rTarget = this 
-    if rTarget.GetDead == 0 && rTarget != Player
-        int iHitLocation = rTarget.GetHitLocation
-        array_var aCreat := Ar_List 2, 4, 6, 8, 9, 11, 12, 13
-        if Ar_Any aCreat ({array_var aIter} => *aIter == iHitLocation)
-            DispatchEventAlt "DLpndSetCreat" iHitLocation
-        endif
+        DispatchEventAlt sEvent iHit
     endif
 end) 1
