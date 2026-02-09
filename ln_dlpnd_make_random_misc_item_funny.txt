@@ -16,4 +16,8 @@ SetEventHandler "OnCellEnter" (begin function{ ref rEnteredCell }
         ref rSingleRocketSouvenir = aArrayForRocketSouvenirs[(GetRandomInRange 0 (Ar_Size aArrayForRocketSouvenirs))]
         rSingleRocketSouvenir.SetBaseForm DMRocketSouvenir
     endif
+
+    aSingleMiscItemInCell = Ar_Null
+    aArrayForRocketSouvenirs = Ar_Null
 end) "first"::NovacGiftShop
+
