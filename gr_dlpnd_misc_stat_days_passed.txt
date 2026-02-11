@@ -1,13 +1,21 @@
-InitExtraMiscStat "Days Passed"
-SetGameMainLoopCallback (begin function {}
-    int iLastDay = (AuxVarGetFLT "iLastDay")
-    if eval IsModLoaded "TaleOfTwoWastelands.esm"
-        int iCurrentDay = (GetGameDaysPassed 2277 08 17)
-    else 
-        int iCurrentDay = (GetGameDaysPassed 2281 10 19)
-    endif
-    if eval (iCurrentDay > iLastDay)
-        ModExtraMiscStat "Days Passed" (iCurrentDay - iLastDay)
-        AuxVarSetFLT "iLastDay" iCurrentDay
-    endif
-end) 1 15 1
+name DLpndDaysPassedMiscStat;
+
+fn () {
+    InitExtraMiscStat("Days Passed");
+    SetGameMainLoopCallback(fn () {
+
+        int iLastDay = (Player.AuxVarGetFLT("iLastDay"));
+        int iCurrentDay;
+
+        if (IsModLoaded("TaleOfTwoWastelands.esm")) {
+            iCurrentDay = (GetGameDaysPassed(2277, 08, 17));
+        } else { 
+            iCurrentDay = (GetGameDaysPassed(2281, 10, 19));
+        }
+
+        if (iCurrentDay > iLastDay) {
+            ModExtraMiscStat("Days Passed", (iCurrentDay - iLastDay));
+            Player.AuxVarSetFLT("iLastDay", iCurrentDay);
+        }
+    }, 1, 15, 1);
+}
