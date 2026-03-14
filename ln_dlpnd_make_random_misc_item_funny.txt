@@ -1,6 +1,6 @@
-SetEventHandler "OnActivate" (begin function { ref rActivator, ref rAction }
-    Player.PlaceAtMe FatManNukeExplosion
-    Player.Kill
+SetEventHandler "OnActivate" (begin function { ref rActivator, ref rActor }
+    rActor.PlaceAtMe FatManNukeExplosion
+    rActor.Kill
 end) "first"::DMRocketSouvenir
 
 SetEventHandler "OnCellEnter" (begin function{ ref rEnteredCell }
@@ -16,4 +16,7 @@ SetEventHandler "OnCellEnter" (begin function{ ref rEnteredCell }
         ref rSingleRocketSouvenir = aArrayForRocketSouvenirs[(GetRandomInRange 0 (Ar_Size aArrayForRocketSouvenirs))]
         rSingleRocketSouvenir.SetBaseForm DMRocketSouvenir
     endif
+
+    aArrayForRocketSouvenirs = Ar_Null
+    aSingleMiscItemInCell = Ar_Null
 end) "first"::NovacGiftShop
